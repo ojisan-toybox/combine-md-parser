@@ -1,6 +1,6 @@
 use combine::{
     between, many,
-    parser::{char::{char, string, space}},
+    parser::{char::{char, string, space}, range::take_while1},
     satisfy, ParseError, Parser, Stream,
 };
 
@@ -11,6 +11,8 @@ where
     Input: Stream<Token = char>,
     Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
 {
+    // TODO: compile 通らない
+    let alphabet = take_while1(|c : char| c.is_alphabetic());
     (string("#"), space(), string("aaa")).map(|(level, _, content)|{
         Heading {
             level: 1,
