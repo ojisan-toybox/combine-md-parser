@@ -1,16 +1,11 @@
-#[macro_use]
 extern crate combine;
-use std::collections::HashMap;
 
 use combine::{
-    between, chainl1, choice,
+    between, choice,
     error::ParseError,
-    many, many1,
-    parser::{
-        char::{char, digit, letter, spaces, string},
-        range::take_while1,
-    },
-    satisfy, token, Parser, Stream,
+    many,
+    parser::char::{char, string},
+    satisfy, Parser, Stream,
 };
 
 mod ast;

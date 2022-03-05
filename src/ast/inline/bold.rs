@@ -1,8 +1,4 @@
-use combine::{
-    between, many,
-    parser::char::{char, string},
-    satisfy, ParseError, Parser, Stream,
-};
+use combine::{between, many, parser::char::string, satisfy, ParseError, Parser, Stream};
 
 use crate::Ast;
 
