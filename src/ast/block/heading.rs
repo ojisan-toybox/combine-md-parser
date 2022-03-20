@@ -2,14 +2,13 @@ use combine::{
     parser::{
         char::{space, string},
         range::take_while1,
-        token,
     },
-    struct_parser, ParseError, Parser, RangeStream, Stream,
+    ParseError, Parser, RangeStream,
 };
 
 use crate::Heading;
 
-fn parse_heading<'a, Input>() -> impl Parser<Input, Output = Heading<'a>>
+pub fn parse_heading<'a, Input>() -> impl Parser<Input, Output = Heading<'a>>
 where
     Input: RangeStream<Token = char, Range = &'a str>,
     Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
