@@ -1,68 +1,20 @@
 extern crate combine;
 
-use combine::{
-    between, choice,
-    error::ParseError,
-    many,
-    parser::char::{char, string},
-    satisfy, Parser, Stream,
-};
+use combine::{choice, error::ParseError, parser::char::char, Parser, Stream};
 
 mod ast;
+use crate::ast::ast::{Ast, Heading};
 
-enum Inline {
-    Anchor,
-    Strong,
-    Italic,
-}
-#[derive(Debug)]
-pub struct Paragraph {
-    content: String,
-}
-#[derive(Debug)]
-pub struct Heading {
-    content: String,
-    level: u8,
-}
-
-#[derive(Debug)]
-pub enum LeafBlock {
-    LeafBlock,
-    Inline,
-    Paragraph(Paragraph),
-    Heading(Heading),
-}
-
-enum ContainerBlock {
-    BlockQuotes(LeafBlock),
-    ListItems,
-}
-
-#[derive(Debug)]
-enum Ast {
-    LeafBlock(LeafBlock),
-    ContainerBlock,
-    Inline,
-}
-
-fn parse_md<Input>() -> impl Parser<Input, Output = Ast>
+fn parse_md<'a, Input>() -> impl Parser<Input, Output = Ast<'a>>
 where
     Input: Stream<Token = char>,
     Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
 {
-    let mut sum = choice((parse_block(), parse_inline()));
-    sum
+    let parsed = choice((parse_block(), parse_inline()));
+    parsed
 }
 
-fn parse_bold<Input>() -> impl Parser<Input, Output = String>
-where
-    Input: Stream<Token = char>,
-    Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
-{
-    between(string("**"), string("**"), many(satisfy(|c| true))).map(|name: String| name)
-}
-
-fn parse_inline<Input>() -> impl Parser<Input, Output = Ast>
+fn parse_inline<'a, Input>() -> impl Parser<Input, Output = Ast<'a>>
 where
     Input: Stream<Token = char>,
     Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
@@ -71,7 +23,7 @@ where
     tok
 }
 
-fn parse_block<Input>() -> impl Parser<Input, Output = Ast>
+fn parse_block<'a, Input>() -> impl Parser<Input, Output = Ast<'a>>
 where
     Input: Stream<Token = char>,
     Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
