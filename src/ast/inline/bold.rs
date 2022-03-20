@@ -2,7 +2,7 @@ use combine::{between, many, parser::char::string, satisfy, ParseError, Parser, 
 
 use crate::Ast;
 
-fn parse_bold<Input>() -> impl Parser<Input, Output = Ast>
+fn parse_bold<'a, Input>() -> impl Parser<Input, Output = Ast<'a>>
 where
     Input: Stream<Token = char>,
     Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
