@@ -4,8 +4,14 @@ pub struct Italic(pub String);
 pub struct Bold(pub String);
 
 #[derive(Debug, PartialEq)]
+pub struct Anchor {
+    pub link: String,
+    pub title: String,
+}
+
+#[derive(Debug, PartialEq)]
 pub enum Inline {
-    Anchor,
+    Anchor(Anchor),
     Bold(Bold),
     Italic(Italic),
 }
