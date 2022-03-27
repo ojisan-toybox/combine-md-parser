@@ -1,9 +1,11 @@
 #[derive(Debug, PartialEq)]
+pub struct Italic(pub String);
+#[derive(Debug, PartialEq)]
 pub struct Bold(pub String);
 enum Inline {
     Anchor,
     Bold(Bold),
-    Italic,
+    Italic(Italic),
 }
 #[derive(Debug)]
 pub struct Paragraph {
