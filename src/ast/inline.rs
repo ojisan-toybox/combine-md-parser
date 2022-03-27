@@ -1,4 +1,4 @@
-use combine::{choice, ParseError, Parser, Stream};
+use combine::{attempt, choice, ParseError, Parser, Stream};
 
 use self::bold::parse_bold;
 use self::italic::parse_italic;
@@ -13,7 +13,7 @@ where
     Input: Stream<Token = char>,
     Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
 {
-    choice((parse_bold(), parse_italic()))
+    choice((attempt(parse_bold()), attempt(parse_italic())))
 }
 
 #[cfg(test)]
