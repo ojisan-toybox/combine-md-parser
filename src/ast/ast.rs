@@ -1,6 +1,8 @@
+#[derive(Debug, PartialEq)]
+pub struct Bold(pub String);
 enum Inline {
     Anchor,
-    Strong,
+    Bold(Bold),
     Italic,
 }
 #[derive(Debug)]
