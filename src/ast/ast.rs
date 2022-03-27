@@ -2,7 +2,9 @@
 pub struct Italic(pub String);
 #[derive(Debug, PartialEq)]
 pub struct Bold(pub String);
-enum Inline {
+
+#[derive(Debug, PartialEq)]
+pub enum Inline {
     Anchor,
     Bold(Bold),
     Italic(Italic),
