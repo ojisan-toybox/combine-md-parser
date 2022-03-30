@@ -17,7 +17,7 @@ pub enum Inline {
     Anchor(Anchor),
     Bold(Bold),
     Italic(Italic),
-    Text(Text)
+    Text(Text),
 }
 #[derive(Debug, PartialEq, Eq)]
 pub struct Heading<'a> {
@@ -26,13 +26,13 @@ pub struct Heading<'a> {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct Paragraph<'a>(pub &'a str);
+pub struct Paragraph(pub Inline);
 
 #[derive(Debug)]
 pub enum LeafBlock<'a> {
     LeafBlock,
     Inline,
-    Paragraph(Paragraph<'a>),
+    Paragraph(Inline),
     Heading(&'a Heading<'a>),
 }
 

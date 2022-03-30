@@ -7,7 +7,8 @@ where
     Input: Stream<Token = char>,
     Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
 {
-    many(satisfy(|_| true)).map(|name: String| {
+    // HACK: 特別な意味を持つ文字を消費しないようにする(本当にこれしか方法ない？)
+    many(satisfy(|c| c != '\n' && c != '[' && c != '*')).map(|name: String| {
         let text = Text(name);
         Inline::Text(text)
     })
@@ -18,7 +19,8 @@ mod tests {
     use combine::Parser;
 
     use crate::ast::{
-        ast::{ Inline, Text}, inline::text::parse_text,
+        ast::{Inline, Text},
+        inline::text::parse_text,
     };
 
     #[test]
