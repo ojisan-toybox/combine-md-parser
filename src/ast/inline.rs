@@ -3,6 +3,7 @@ use combine::{attempt, choice, ParseError, Parser, Stream};
 use self::bold::parse_bold;
 use self::italic::parse_italic;
 use self::link::parse_anchor;
+use self::text::parse_text;
 
 use super::ast::Inline;
 
@@ -20,6 +21,7 @@ where
         attempt(parse_bold()),
         attempt(parse_italic()),
         attempt(parse_anchor()),
+        attempt(parse_text())
     ))
 }
 
@@ -28,7 +30,7 @@ mod tests {
     use combine::Parser;
 
     use crate::ast::{
-        ast::{Anchor, Bold, Inline, Italic},
+        ast::{Anchor, Bold, Inline, Italic, Text},
         inline::parse_inline,
     };
 
@@ -51,8 +53,17 @@ mod tests {
     }
 
     #[test]
-    fn it_works() {
-        let input = "[test](http://localhost:3000)";
+    fn it_works_link() {
+        let input = "hello";
+        let mut parser = parse_inline();
+        let res = parser.parse(input);
+        let text = Text("hello".to_string());
+        assert_eq!(res.unwrap().0, Inline::Text(text))
+    }
+
+    #[test]
+    fn it_works_text() {
+        let input = "aaa";
         let mut parser = parse_inline();
         let res = parser.parse(input);
         let anchor = Anchor {
