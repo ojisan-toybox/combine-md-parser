@@ -26,7 +26,7 @@ pub struct Heading<'a> {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct Paragraph(pub Inline);
+pub struct Paragraph(pub Vec<Inline>);
 
 #[derive(Debug)]
 pub enum LeafBlock<'a> {
