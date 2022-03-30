@@ -15,21 +15,20 @@ pub enum Inline {
     Bold(Bold),
     Italic(Italic),
 }
-#[derive(Debug)]
-pub struct Paragraph {
-    content: String,
-}
 #[derive(Debug, PartialEq, Eq)]
 pub struct Heading<'a> {
     pub content: &'a str,
     pub level: u8,
 }
 
+#[derive(Debug, PartialEq)]
+pub struct Paragraph<'a>(pub &'a str);
+
 #[derive(Debug)]
 pub enum LeafBlock<'a> {
     LeafBlock,
     Inline,
-    Paragraph(Paragraph),
+    Paragraph(Paragraph<'a>),
     Heading(&'a Heading<'a>),
 }
 

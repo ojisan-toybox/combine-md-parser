@@ -15,7 +15,11 @@ where
     Input: Stream<Token = char>,
     Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
 {
-    choice((attempt(parse_bold()), attempt(parse_italic()), attempt(parse_anchor())))
+    choice((
+        attempt(parse_bold()),
+        attempt(parse_italic()),
+        attempt(parse_anchor()),
+    ))
 }
 
 #[cfg(test)]
@@ -23,7 +27,7 @@ mod tests {
     use combine::Parser;
 
     use crate::ast::{
-        ast::{Bold, Inline, Italic, Anchor},
+        ast::{Anchor, Bold, Inline, Italic},
         inline::parse_inline,
     };
 
