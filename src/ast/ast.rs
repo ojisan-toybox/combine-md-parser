@@ -4,6 +4,9 @@ pub struct Italic(pub String);
 pub struct Bold(pub String);
 
 #[derive(Debug, PartialEq)]
+pub struct Text(pub String);
+
+#[derive(Debug, PartialEq)]
 pub struct Anchor {
     pub link: String,
     pub title: String,
@@ -14,6 +17,7 @@ pub enum Inline {
     Anchor(Anchor),
     Bold(Bold),
     Italic(Italic),
+    Text(Text)
 }
 #[derive(Debug, PartialEq, Eq)]
 pub struct Heading<'a> {

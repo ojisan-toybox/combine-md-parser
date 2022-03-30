@@ -9,6 +9,7 @@ use super::ast::Inline;
 pub mod bold;
 pub mod italic;
 pub mod link;
+pub mod text;
 
 fn parse_inline<'a, Input>() -> impl Parser<Input, Output = Inline>
 where
