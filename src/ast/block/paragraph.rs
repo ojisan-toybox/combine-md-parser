@@ -10,6 +10,7 @@ where
     Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
 {
     let inlines = many(parse_inline());
+
     let heading_content =
         (char('\n'), inlines, char('\n')).map(|(_, content, _)| Paragraph(content));
     heading_content
@@ -29,7 +30,9 @@ mod tests {
 aaa
 "#;
         let mut parser = parse_paragraph();
+        println!("p");
         let res = parser.parse(input);
+        println!("{:?}", res);
         let text = Text("aaa".to_string());
         let inline = Inline::Text(text);
         let paragraph = Paragraph(vec![inline]);
