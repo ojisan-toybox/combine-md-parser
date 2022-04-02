@@ -1,4 +1,4 @@
-use combine::{between, many, many1, parser::char::string, satisfy, ParseError, Parser, Stream};
+use combine::{between, many1, parser::char::string, satisfy, ParseError, Parser, Stream};
 
 use crate::ast::ast::{Bold, Inline, Text};
 
@@ -8,7 +8,8 @@ where
     Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
 {
     let f = |c| {
-        let bool = c != '\n' && c != '[' && c != ']' && c != '(' && c != ')' && c != '*';
+        let bool =
+            c != '\n' && c != '[' && c != ']' && c != '(' && c != ')' && c != '*' && c != '#';
         bool
     };
     // HACK: 特別な意味を持つ文字を消費しないようにする(本当にこれしか方法ない？)

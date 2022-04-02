@@ -28,7 +28,7 @@ pub struct Heading {
 #[derive(Debug, PartialEq)]
 pub struct Paragraph(pub Vec<Inline>);
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum LeafBlock {
     LeafBlock,
     Inline,
@@ -36,14 +36,8 @@ pub enum LeafBlock {
     Heading(Heading),
 }
 
-enum ContainerBlock {
-    BlockQuotes(LeafBlock),
-    ListItems,
-}
-
-#[derive(Debug)]
-pub enum Ast {
-    LeafBlock(LeafBlock),
-    ContainerBlock,
-    Inline,
+#[derive(Debug, PartialEq)]
+pub enum Document {
+    LeafBlocks(Vec<LeafBlock>),
+    Inline(Inline),
 }
