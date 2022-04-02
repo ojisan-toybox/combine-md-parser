@@ -32,7 +32,7 @@ pub struct Paragraph(pub Vec<Inline>);
 pub enum LeafBlock<'a> {
     LeafBlock,
     Inline,
-    Paragraph(Inline),
+    Paragraph(Paragraph),
     Heading(&'a Heading<'a>),
 }
 
