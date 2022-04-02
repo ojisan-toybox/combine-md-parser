@@ -20,8 +20,8 @@ pub enum Inline {
     Text(Text),
 }
 #[derive(Debug, PartialEq, Eq)]
-pub struct Heading<'a> {
-    pub content: &'a str,
+pub struct Heading {
+    pub content: String,
     pub level: u8,
 }
 
@@ -29,21 +29,21 @@ pub struct Heading<'a> {
 pub struct Paragraph(pub Vec<Inline>);
 
 #[derive(Debug)]
-pub enum LeafBlock<'a> {
+pub enum LeafBlock {
     LeafBlock,
     Inline,
     Paragraph(Paragraph),
-    Heading(&'a Heading<'a>),
+    Heading(Heading),
 }
 
-enum ContainerBlock<'a> {
-    BlockQuotes(&'a LeafBlock<'a>),
+enum ContainerBlock {
+    BlockQuotes(LeafBlock),
     ListItems,
 }
 
 #[derive(Debug)]
-pub enum Ast<'a> {
-    LeafBlock(&'a LeafBlock<'a>),
+pub enum Ast {
+    LeafBlock(LeafBlock),
     ContainerBlock,
     Inline,
 }
