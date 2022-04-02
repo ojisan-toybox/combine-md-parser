@@ -26,25 +26,14 @@ where
     ))
 }
 
-pub fn parse_inlines<'a, Input>() -> impl Parser<Input, Output = Vec<Inline>>
-where
-    Input: Stream<Token = char>,
-    Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
-{
-    many(parse_inline())
-}
-
 #[cfg(test)]
 mod tests {
     use combine::Parser;
 
     use crate::ast::{
         ast::{Anchor, Bold, Inline, Italic, Text},
-        inline::{ parse_inline},
+        inline::parse_inline,
     };
-
-    use super::parse_inlines;
-
 
     #[test]
     fn it_works_bold() {
@@ -83,60 +72,5 @@ mod tests {
         let res = parser.parse(input);
         let text = Text("hello world".to_string());
         assert_eq!(res.unwrap().0, Inline::Text(text))
-    }
-
-    #[test]
-    fn it_works_inlines_with_single() {
-        let input = "*italic*";
-        let mut parser = parse_inlines();
-        let res = parser.parse(input);
-        let italic = Italic("italic".to_string());
-        let inline_italic = Inline::Italic(italic);
-        let inlines = vec![inline_italic];
-        assert_eq!(res.unwrap().0, inlines);
-    }
-
-    #[test]
-    fn it_works_inlines() {
-        let input = "aaa [hoge](http://localhost:3000) *italic* is not **bold**";
-        let mut parser = parse_inlines();
-        let res = parser.parse(input);
-        let text = Text("aaa ".to_string());
-        let inline_text = Inline::Text(text);
-        let anchor = Anchor {
-            title: "hoge".to_string(),
-            link: "http://localhost:3000".to_string(),
-        };
-        let italic = Italic("italic".to_string());
-        let inline_italic = Inline::Italic(italic);
-        let inline_link = Inline::Anchor(anchor);
-        let text2 = Text("is not ".to_string());
-        let inline_text2 = Inline::Text(text2);
-        let bold = Bold("bold".to_string());
-        let inline_bold = Inline::Bold(bold);
-        let inlines = vec![
-            inline_text,
-            inline_link,
-            inline_italic,
-            inline_text2,
-            inline_bold,
-        ];
-        assert_eq!(res.unwrap().0, inlines);
-    }
-
-    #[test]
-    fn it_works_inlines_without_text() {
-        let input = "[hoge](http://localhost:3000) *italic*";
-        let mut parser = parse_inlines();
-        let res = parser.parse(input);
-        let anchor = Anchor {
-            title: "hoge".to_string(),
-            link: "http://localhost:3000".to_string(),
-        };
-        let italic = Italic("italic".to_string());
-        let inline_italic = Inline::Italic(italic);
-        let inline_link = Inline::Anchor(anchor);
-        let inlines = vec![inline_link, inline_italic];
-        assert_eq!(res.unwrap().0, inlines);
     }
 }

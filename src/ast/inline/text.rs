@@ -1,4 +1,4 @@
-use combine::{between, many, parser::char::string, satisfy, ParseError, Parser, Stream, many1};
+use combine::{between, many, many1, parser::char::string, satisfy, ParseError, Parser, Stream};
 
 use crate::ast::ast::{Bold, Inline, Text};
 
