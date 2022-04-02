@@ -1,5 +1,5 @@
 use combine::parser::char::{char, spaces};
-use combine::{attempt, choice, many, opaque, ParseError, Parser, Stream, parser::char::space};
+use combine::{attempt, choice, many, opaque, parser::char::space, ParseError, Parser, Stream};
 
 use self::bold::parse_bold;
 use self::italic::parse_italic;
@@ -19,10 +19,10 @@ where
     Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
 {
     choice((
+        attempt(parse_text().skip(spaces())),
         attempt(parse_bold().skip(spaces())),
         attempt(parse_italic().skip(spaces())),
         attempt(parse_anchor().skip(spaces())),
-        attempt(parse_text().skip(spaces())),
     ))
 }
 
@@ -34,34 +34,17 @@ where
     many(parse_inline())
 }
 
-fn experiment<'a, Input>() -> impl Parser<Input, Output = Vec<char>>
-where
-    Input: Stream<Token = char>,
-    Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
-{
-        many(choice(
-            (attempt(char('b')), attempt(char('c')))
-        ))
-}
-
 #[cfg(test)]
 mod tests {
     use combine::Parser;
 
     use crate::ast::{
         ast::{Anchor, Bold, Inline, Italic, Text},
-        inline::{parse_inline, experiment},
+        inline::{ parse_inline},
     };
 
     use super::parse_inlines;
 
-    #[test]
-    fn it_works_ex() {
-        let input = "bcc";
-        let mut parser = experiment();
-        let res = parser.parse(input);
-        assert_eq!(res.unwrap().0, vec!['b', 'c', 'c'])
-    }
 
     #[test]
     fn it_works_bold() {
@@ -109,9 +92,7 @@ mod tests {
         let res = parser.parse(input);
         let italic = Italic("italic".to_string());
         let inline_italic = Inline::Italic(italic);
-        let inlines = vec![
-            inline_italic,
-        ];
+        let inlines = vec![inline_italic];
         assert_eq!(res.unwrap().0, inlines);
     }
 
@@ -120,7 +101,7 @@ mod tests {
         let input = "aaa [hoge](http://localhost:3000) *italic* is not **bold**";
         let mut parser = parse_inlines();
         let res = parser.parse(input);
-        let text = Text("aaa".to_string());
+        let text = Text("aaa ".to_string());
         let inline_text = Inline::Text(text);
         let anchor = Anchor {
             title: "hoge".to_string(),
@@ -129,9 +110,9 @@ mod tests {
         let italic = Italic("italic".to_string());
         let inline_italic = Inline::Italic(italic);
         let inline_link = Inline::Anchor(anchor);
-        let text2 = Text("is not".to_string());
+        let text2 = Text("is not ".to_string());
         let inline_text2 = Inline::Text(text2);
-        let bold = Bold("italic".to_string());
+        let bold = Bold("bold".to_string());
         let inline_bold = Inline::Bold(bold);
         let inlines = vec![
             inline_text,
@@ -155,10 +136,7 @@ mod tests {
         let italic = Italic("italic".to_string());
         let inline_italic = Inline::Italic(italic);
         let inline_link = Inline::Anchor(anchor);
-        let inlines = vec![
-            inline_link,
-            inline_italic,
-        ];
+        let inlines = vec![inline_link, inline_italic];
         assert_eq!(res.unwrap().0, inlines);
     }
 }
