@@ -34,6 +34,7 @@ fn main() {
 
 ## h2
 
+## h3
 "#);
     println!("{:?}", parsed);
 }

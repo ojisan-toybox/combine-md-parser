@@ -32,6 +32,18 @@ mod tests {
     }
 
     #[test]
+    fn it_works_simple_text() {
+        let input = "simple";
+        let mut parser = parse_paragraph();
+        let res = parser.parse(input);
+        let text = Text("simple".to_string());
+        let inline_text = Inline::Text(text);
+        let inlines = vec![inline_text];
+        let paragraph = Paragraph(inlines);
+        assert_eq!(res.unwrap().0, paragraph);
+    }
+
+    #[test]
     fn it_works_inlines() {
         let input = "aaa [hoge](http://localhost:3000) *italic* is not **bold**";
         let mut parser = parse_paragraph();
