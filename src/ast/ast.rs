@@ -4,6 +4,9 @@ pub struct Italic(pub String);
 pub struct Bold(pub String);
 
 #[derive(Debug, PartialEq)]
+pub struct Text(pub String);
+
+#[derive(Debug, PartialEq)]
 pub struct Anchor {
     pub link: String,
     pub title: String,
@@ -14,33 +17,27 @@ pub enum Inline {
     Anchor(Anchor),
     Bold(Bold),
     Italic(Italic),
-}
-#[derive(Debug)]
-pub struct Paragraph {
-    content: String,
+    Text(Text),
 }
 #[derive(Debug, PartialEq, Eq)]
-pub struct Heading<'a> {
-    pub content: &'a str,
+pub struct Heading {
+    pub content: String,
     pub level: u8,
 }
 
-#[derive(Debug)]
-pub enum LeafBlock<'a> {
+#[derive(Debug, PartialEq)]
+pub struct Paragraph(pub Vec<Inline>);
+
+#[derive(Debug, PartialEq)]
+pub enum LeafBlock {
     LeafBlock,
     Inline,
     Paragraph(Paragraph),
-    Heading(&'a Heading<'a>),
+    Heading(Heading),
 }
 
-enum ContainerBlock<'a> {
-    BlockQuotes(&'a LeafBlock<'a>),
-    ListItems,
-}
-
-#[derive(Debug)]
-pub enum Ast<'a> {
-    LeafBlock(&'a LeafBlock<'a>),
-    ContainerBlock,
-    Inline,
+#[derive(Debug, PartialEq)]
+pub enum Document {
+    LeafBlocks(Vec<LeafBlock>),
+    Inline(Inline),
 }
